@@ -7,7 +7,7 @@ import datetime
 # CORS(app)
 
 def read_period_from_excel(file_path):
-    workbook = openpyxl.load_workbook('Book8.xlsx')
+    workbook = openpyxl.load_workbook('Excel file name')
     sheet = workbook.active
     first_column_values=[]
     for row in sheet.iter_rows(min_row=2, max_row=sheet.max_row, min_col=1, max_col=1):
@@ -15,7 +15,7 @@ def read_period_from_excel(file_path):
             first_column_values.append(cell.value)
     return first_column_values
 def read_Activity_from_excel(file_path):
-    workbook = openpyxl.load_workbook('Book8.xlsx')
+    workbook = openpyxl.load_workbook('Excel file name')
     sheet = workbook.active
     Activity_column_values=[]
     for row in sheet.iter_rows(min_row=2, max_row=sheet.max_row, min_col=4, max_col=4):
@@ -41,23 +41,23 @@ def get_quater_dates(values):
 
 def fetch_stock_data(symbol,values):
     # base_url = 'http://api.marketstack.com/v1/eod'
-    # access_key = 'd17e9b08270b218b1b39304c52b43234'
+    # access_key = 'Give your access key'
     start_date, end_date = get_quater_dates(values)
     querystring = {"symbols":symbol,"date_from":start_date, "date_to":end_date}
-    response = req.get('http://api.marketstack.com/v1/eod?access_key=d17e9b08270b218b1b39304c52b43234',params=querystring)
+    response = req.get('http://api.marketstack.com/v1/eod?access_key=give your access key',params=querystring)
     if response.status_code ==200:
         data=response.json()
         return data['data'] if 'data' in data else[]
     else:
         print('error occured')
         return []
-Period= read_period_from_excel(r'C:\Users\suman\PycharmProjects\pythonProject\.venv\Book8.xlsx')
-workbook = openpyxl.load_workbook(r'C:\Users\suman\PycharmProjects\pythonProject\.venv\Book8.xlsx')
+Period= read_period_from_excel(r'give path of excel in your local')
+workbook = openpyxl.load_workbook(r'give path of excel in your local')
 sheet = workbook.active
 price_column = 'F'
 row = 2
 symbol = "AME"
-Activity= read_Activity_from_excel(r'C:\Users\suman\PycharmProjects\pythonProject\.venv\Book8.xlsx')
+Activity= read_Activity_from_excel(r'give path of excel in your local')
 for row, (values, values1) in enumerate(zip(Period, Activity), start=2):
     print(f"Processing row {row}: Period={values}, Activity={values1}")
     if values1 is not None:
@@ -84,8 +84,8 @@ for row, (values, values1) in enumerate(zip(Period, Activity), start=2):
             else:
              sheet[f'{price_column}{row}'] = 'N/A'
     row += 1
-workbook.save('Book8.xlsx')
-workbook = openpyxl.load_workbook(r'C:\Users\suman\PycharmProjects\pythonProject\.venv\Book8.xlsx')
+workbook.save('excel file name')
+workbook = openpyxl.load_workbook(r'give path of excel in your local')
 sheet = workbook.active
 cell_value=sheet['B2'].value
 #print(cell_value)
@@ -118,7 +118,7 @@ column_letter = 'F'
 new_row = sheet.max_row + 1
 sheet[f'{column_letter}{sheet.max_row}'] = 'avg_cost_copy'
 sheet[f'{column_letter}{new_row}'] = avg_cost_copy
-workbook.save('Book8.xlsx')
+workbook.save('excel file name')
 # try:
 #     workbook.save('sales.xlsx')
 #     print("Workbook saved successfully")
